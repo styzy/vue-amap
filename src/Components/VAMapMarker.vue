@@ -1,6 +1,7 @@
 <template lang="pug">
 .v-amap-marker
-	slot
+	.v-amap-marker-content(ref="content")
+		slot
 </template>
 <script>
 import { AMapLoader } from '@'
@@ -57,6 +58,9 @@ export default {
 
 		this._updateMarkerContent()
 	},
+	beforeDestroy() {
+		this._resetMarkerContent()
+	},
 	destroyed() {
 		this._removeMarker()
 	},
@@ -64,7 +68,9 @@ export default {
 		async _createMarker() {
 			const AMap = await AMapLoader.load(),
 				options = Object.assign({}, this.$attrs, {
-					content: this.$scopedSlots.default ? this.$el : null
+					content: this.$scopedSlots.default
+						? this.$refs.content
+						: null
 				})
 
 			this.marker = new AMap.Marker(options)
@@ -75,7 +81,10 @@ export default {
 			this._addMarker()
 		},
 		_updateMarkerContent() {
-			this.marker.setContent(this.$el)
+			this.marker.setContent(this.$refs.content)
+		},
+		_resetMarkerContent() {
+			this.$el.appendChild(this.$refs.content)
 		},
 		_addMarker() {
 			if (!this.$parent.addMarker) return

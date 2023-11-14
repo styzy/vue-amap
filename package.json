@@ -1,6 +1,6 @@
 {
 	"name": "@styzy/vue-amap",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "An AMap Plugins For Vue.js",
 	"keywords": [
 		"vue",
@@ -24,6 +24,7 @@
 	"private": false,
 	"license": "MIT",
 	"scripts": {
+		"dev": "vue-cli-service serve --open",
 		"lib": "vue-cli-service build --target lib --name vue-amap --dest lib src/index.js"
 	},
 	"dependencies": {
