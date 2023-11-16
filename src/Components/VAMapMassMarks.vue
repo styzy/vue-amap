@@ -26,13 +26,15 @@ const watchedProps = [
 
 export default {
 	name: 'VAMapMassMarks',
+	inject: ['getMap'],
 	data() {
 		return {
 			marker: null
 		}
 	},
-	created() {
-		this._createMarker()
+	async created() {
+		await this._createMarker()
+		this._addMarker()
 	},
 	destroyed() {
 		this._removeMarker()
@@ -48,13 +50,9 @@ export default {
 
 			listenerProxy(this.marker, this)
 			watchProps(this.marker, this, watchedProps)
-
-			this._addMarker()
 		},
 		_addMarker() {
-			if (!this.$parent.aMap) return
-
-			this.marker.setMap(this.$parent.aMap)
+			this.marker.setMap(this.getMap())
 
 			this.$emit('init', this.marker)
 		},

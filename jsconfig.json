@@ -1,12 +1,16 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
 		"module": "CommonJS",
+		"target": "ES6",
+		"allowSyntheticDefaultImports": false,
+		"strictNullChecks": true,
 		"baseUrl": "./",
 		"paths": {
-			"~/*": ["/src/*"],
-			"#/*": ["/src/utils/*"]
+			"@/*": ["src/*"],
+			"#": ["src/utils"],
+			"@test*": ["test/*"],
 		}
 	},
-	"exclude": ["node_modules", "dist", "lib"]
+	"exclude": ["node_modules", "dist"],
+	"include": ["src/**/*"]
 }

@@ -1,45 +1,55 @@
 <template lang="pug">
 .app
-	button(@click="handleFitView()") setFitView
-	button(@click="abc = false") test
-	VAMap(@init="handleMapInit")
-		template(#default="{ AMap, aMap }")
-			VAMapMarker(
-				:offset="new AMap.Pixel(0, 0)"
-				:position="[118.369659, 31.312356]"
-				@init="marker => aMap.setFitView(marker)"
-				anchor="center"
-				v-if="abc"
-			)
-				Test
-			VAMapPolygon(
-				:borderWidth="2"
-				:fillOpacity="0.2"
-				:path="path"
-				:strokeOpacity="0.5"
-				:strokeWeight="2"
-				@init="polygon => aMap.setFitView(polygon)"
-				fillColor="#e98989"
-				strokeColor="#ec0000"
-				strokeStyle="dashed"
-			)
-			VAMapMassMarks(
-				:data="massLocationList"
-				:styleObject="{ anchor: new AMap.Pixel(5, 5), size: new AMap.Size(10, 10), url: massIconUrl }"
-			)
+	.version version {{ version }}
+	.btn-ctn
+		button(@click="handleFitView()") 自动适配视野
+		button(@click="isRender = !isRender") 是否渲染 [{{ isRender }}]
+		button(@click="isShow = !isShow") 显示隐藏切换 [{{ isShow }}]
+	.map-ctn
+		VAMap(@init="handleMapInit")
+			template(#default="{ AMap, aMap }")
+				VAMapMarker(
+					:offset="new AMap.Pixel(0, 0)"
+					:position="[118.369659, 31.312356]"
+					:visible="isShow"
+					@init="handleMarkerInit"
+					anchor="center"
+					v-if="isRender"
+				)
+				VAMapPolygon(
+					:borderWidth="2"
+					:fillOpacity="0.2"
+					:path="path"
+					:strokeOpacity="0.5"
+					:strokeWeight="2"
+					:visible="isShow"
+					@init="handlePolygonInit"
+					fillColor="#e98989"
+					strokeColor="#ec0000"
+					strokeStyle="dashed"
+					v-if="isRender"
+				)
+				VAMapMassMarks(
+					:data="massLocationList"
+					:styleObject="{ anchor: new AMap.Pixel(5, 5), size: new AMap.Size(10, 10), url: massIconUrl }"
+					:visible="isShow"
+					@init="handleMassMarkInit"
+					v-if="isRender"
+				)
 </template>
 
 <script>
+import AMapManager from '@'
+
 export default {
 	name: 'App',
-	components: {
-		Test: () => import('./Test.vue')
-	},
 	data() {
 		return {
-			abc: true,
+			version: AMapManager.version,
 			aMap: null,
 			AMap: null,
+			isRender: true,
+			isShow: true,
 			path: [
 				[118.955969, 32.301212],
 				[118.652472, 32.191452],
@@ -75,6 +85,15 @@ export default {
 				})
 			}
 			return data
+		},
+		handleMarkerInit() {
+			console.log('marker init')
+		},
+		handlePolygonInit() {
+			console.log('polygon init')
+		},
+		handleMassMarkInit() {
+			console.log('mass mark init')
 		}
 	}
 }
@@ -85,5 +104,29 @@ body
 	margin 0
 	padding 0
 .app
+	position relative
 	height 100vh
+	.version
+		position absolute
+		top 0
+		right 20px
+		height 40px
+		line-height @height
+	.btn-ctn
+		height 40px
+		button
+			padding 0 20px
+			height @height
+			outline none
+			border 1px solid #CCCCCC
+			background-color #EEEEEE
+			color #424242
+			line-height @height
+			cursor pointer
+			&:hover
+				background-color #FFFFFF
+		button+button
+			border-left none
+	.map-ctn
+		height calc(100% - 40px)
 </style>

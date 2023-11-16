@@ -1,9 +1,13 @@
 import AMapLoader from './loader'
 import Components from './Components'
+import { version } from './config'
 
 let globalMapOptions = {}
 
 class AMapManager {
+	static get version() {
+		return version
+	}
 	static get AMapLoader() {
 		return AMapLoader
 	}

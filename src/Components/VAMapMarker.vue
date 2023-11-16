@@ -39,14 +39,21 @@ const watchedProps = [
 
 export default {
 	name: 'VAMapMarker',
+	inject: ['getMap'],
 	data() {
 		return {
 			marker: null,
 			isFixedMarkerSize: false
 		}
 	},
-	mounted() {
-		this._createMarker()
+	computed: {
+		hasSlot() {
+			return !!this.$scopedSlots.default
+		}
+	},
+	async mounted() {
+		await this._createMarker()
+		this._addMarker()
 	},
 	async updated() {
 		if (!this.marker) return
@@ -68,36 +75,36 @@ export default {
 		async _createMarker() {
 			const AMap = await AMapLoader.load(),
 				options = Object.assign({}, this.$attrs, {
-					content: this.$scopedSlots.default
-						? this.$refs.content
-						: null
+					content: this._getMarkerContent()
 				})
 
 			this.marker = new AMap.Marker(options)
 
 			listenerProxy(this.marker, this)
 			watchProps(this.marker, this, watchedProps)
-
-			this._addMarker()
+		},
+		_getMarkerContent() {
+			return this.hasSlot ? this.$refs.content : null
 		},
 		_updateMarkerContent() {
-			this.marker.setContent(this.$refs.content)
+			if (!this.hasSlot) return
+
+			this.marker.setContent(this._getMarkerContent())
 		},
 		_resetMarkerContent() {
+			if (!this.hasSlot) return
+
 			this.$el.appendChild(this.$refs.content)
 		},
 		_addMarker() {
-			if (!this.$parent.addMarker) return
-
-			this.$parent.addMarker(this.marker)
+			this.getMap()?.add(this.marker)
 
 			this.$emit('init', this.marker)
 		},
 		_removeMarker() {
 			if (!this.marker) return
-			if (!this.$parent.removeMarker) return
 
-			this.$parent.removeMarker(this.marker)
+			this.getMap()?.remove(this.marker)
 		}
 	}
 }

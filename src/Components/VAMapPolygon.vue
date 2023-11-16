@@ -81,13 +81,15 @@ const watchedProps = [
 
 export default {
 	name: 'VAMapPolygon',
+	inject: ['getMap'],
 	data() {
 		return {
 			marker: null
 		}
 	},
-	created() {
-		this._createMarker()
+	async created() {
+		await this._createMarker()
+		this._addMarker()
 	},
 	destroyed() {
 		this._removeMarker()
@@ -103,21 +105,16 @@ export default {
 
 			listenerProxy(this.marker, this)
 			watchProps(this.marker, this, watchedProps)
-
-			this._addMarker()
 		},
 		_addMarker() {
-			if (!this.$parent.addMarker) return
-
-			this.$parent.addMarker(this.marker)
+			this.getMap()?.add(this.marker)
 
 			this.$emit('init', this.marker)
 		},
 		_removeMarker() {
 			if (!this.marker) return
-			if (!this.$parent.removeMarker) return
 
-			this.$parent.removeMarker(this.marker)
+			this.getMap()?.remove(this.marker)
 		}
 	},
 	render() {

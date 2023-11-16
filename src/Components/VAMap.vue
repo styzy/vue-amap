@@ -28,6 +28,11 @@ const watchedProps = [
 
 export default {
 	name: 'VAMap',
+	provide() {
+		return {
+			getMap: this.getMap
+		}
+	},
 	data() {
 		return {
 			AMap: null,
@@ -60,12 +65,15 @@ export default {
 		_destroyMap() {
 			this.aMap && this.aMap.destroy()
 		},
-		addMarker(marker) {
-			this.aMap && this.aMap.add(marker)
-		},
-		removeMarker(marker) {
-			this.aMap && this.aMap.remove(marker)
+		getMap() {
+			return this.aMap
 		}
+		// addMarker(marker) {
+		// 	this.aMap && this.aMap.add(marker)
+		// },
+		// removeMarker(marker) {
+		// 	this.aMap && this.aMap.remove(marker)
+		// }
 	}
 }
 </script>
