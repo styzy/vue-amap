@@ -36,6 +36,13 @@
 					@init="handleMassMarkInit"
 					v-if="isRender"
 				)
+		.search-ctn
+			VAMapPlaceSearchInput(@change="handlePlaceChange" placeholder="地址搜索")
+			VAMapPlaceSearchInput(
+				:customEnable="false"
+				@change="handlePlaceChange"
+				placeholder="地址搜索（禁止自定义输入）"
+			)
 </template>
 
 <script>
@@ -94,6 +101,9 @@ export default {
 		},
 		handleMassMarkInit() {
 			console.log('mass mark init')
+		},
+		handlePlaceChange(position) {
+			console.log('place change:', position)
 		}
 	}
 }
@@ -128,5 +138,12 @@ body
 		button+button
 			border-left none
 	.map-ctn
+		position relative
 		height calc(100% - 40px)
+		.search-ctn
+			position absolute
+			top 20px
+			left 20px
+			z-index 1
+			width 300px
 </style>

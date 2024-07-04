@@ -1,6 +1,11 @@
 <template lang="pug">
 .v-amap-place-search-input
-	input(:placeholder="placeholder" ref="input")
+	input(
+		:placeholder="placeholder"
+		@blur="handleBlur()"
+		ref="input"
+		v-model="inputValue"
+	)
 </template>
 
 <script>
@@ -21,6 +26,8 @@ export default {
 	data() {
 		return {
 			AMap: null,
+			inputValue: '',
+			placeName: '',
 			autocompleteListener: null,
 			placeSearchListener: null
 		}
@@ -43,6 +50,7 @@ export default {
 				autocomplete,
 				'select',
 				event => {
+					this.placeName = event.poi.name
 					placeSearch.search(event.poi.name)
 				}
 			)
@@ -66,7 +74,7 @@ export default {
 					this.$emit('change', position)
 
 					if (!position && !this.customEnable) {
-						this.$refs.input.value = ''
+						this.inputValue = ''
 					}
 				}
 			)
@@ -74,6 +82,20 @@ export default {
 		removeListener() {
 			this.AMap.event.removeListener(this.autocompleteListener)
 			this.AMap.event.removeListener(this.placeSearchListener)
+		},
+		clear() {
+			this.inputValue = ''
+			this.placeName = ''
+			this.$emit('change', null)
+		},
+		handleBlur() {
+			if (this.customEnable) return
+			if (this.inputValue !== this.placeName) {
+				this.clear()
+			}
+		},
+		handleInput(event) {
+			this.inputValue = event.target.value
 		}
 	}
 }

@@ -1,5 +1,3 @@
-export const version = '1.1.0'
+import packageJson from '/package.json'
 
-export default {
-	version
-}
+export const version = packageJson.version
