@@ -71,11 +71,12 @@ export default {
 							event.poiList.pois[0].location.lat
 						]
 					}
-					this.$emit('change', position)
 
 					if (!position && !this.customEnable) {
 						this.inputValue = ''
 					}
+
+					this.$emit('change', position, this.inputValue)
 				}
 			)
 		},
@@ -86,7 +87,7 @@ export default {
 		clear() {
 			this.inputValue = ''
 			this.placeName = ''
-			this.$emit('change', null)
+			this.$emit('change', null, this.inputValue)
 		},
 		handleBlur() {
 			if (this.customEnable) return
