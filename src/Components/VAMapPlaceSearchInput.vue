@@ -13,7 +13,15 @@ import { AMapLoader } from '@'
 
 export default {
 	name: 'VAMapPlaceSearchInput',
+	model: {
+		prop: 'value',
+		event: 'change'
+	},
 	props: {
+		value: {
+			type: String,
+			default: ''
+		},
 		placeholder: {
 			type: String,
 			default: ''
@@ -73,10 +81,11 @@ export default {
 					}
 
 					if (!position && !this.customEnable) {
-						this.inputValue = ''
+						this.clear()
+					} else {
+						this.$emit('change', this.placeName)
+						this.$emit('locationChange', position)
 					}
-
-					this.$emit('change', position, this.inputValue)
 				}
 			)
 		},
@@ -87,12 +96,16 @@ export default {
 		clear() {
 			this.inputValue = ''
 			this.placeName = ''
-			this.$emit('change', null, this.inputValue)
+			this.$emit('change', this.placeName)
+			this.$emit('locationChange', null)
 		},
 		handleBlur() {
-			if (this.customEnable) return
 			if (this.inputValue !== this.placeName) {
-				this.clear()
+				if (this.customEnable) {
+					this.$emit('change', this.inputValue)
+				} else {
+					this.clear()
+				}
 			}
 		},
 		handleInput(event) {
