@@ -72,7 +72,7 @@ export default {
 			massIconUrl:
 				'https://a.amap.com/jsapi_demos/static/images/mass2.png',
 			massLocationList: [],
-			place1: '',
+			place1: '123',
 			place2: ''
 		}
 	},

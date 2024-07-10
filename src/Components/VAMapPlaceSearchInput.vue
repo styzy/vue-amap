@@ -1,10 +1,13 @@
 <template lang="pug">
 .v-amap-place-search-input
 	input(
+		:class="{ 'is-disabled': disabled }"
+		:disabled="disabled"
 		:placeholder="placeholder"
+		:value="value"
 		@blur="handleBlur()"
+		@input="handleInput"
 		ref="input"
-		v-model="inputValue"
 	)
 </template>
 
@@ -26,6 +29,10 @@ export default {
 			type: String,
 			default: ''
 		},
+		disabled: {
+			type: Boolean,
+			default: false
+		},
 		customEnable: {
 			type: Boolean,
 			default: true
@@ -34,7 +41,6 @@ export default {
 	data() {
 		return {
 			AMap: null,
-			inputValue: '',
 			placeName: '',
 			autocompleteListener: null,
 			placeSearchListener: null
@@ -94,22 +100,19 @@ export default {
 			this.AMap.event.removeListener(this.placeSearchListener)
 		},
 		clear() {
-			this.inputValue = ''
 			this.placeName = ''
-			this.$emit('change', this.placeName)
+			this.$emit('change', '')
 			this.$emit('locationChange', null)
 		},
 		handleBlur() {
-			if (this.inputValue !== this.placeName) {
-				if (this.customEnable) {
-					this.$emit('change', this.inputValue)
-				} else {
+			if (this.value !== this.placeName) {
+				if (!this.customEnable) {
 					this.clear()
 				}
 			}
 		},
 		handleInput(event) {
-			this.inputValue = event.target.value
+			this.$emit('change', event.target.value)
 		}
 	}
 }
@@ -133,6 +136,13 @@ export default {
 		line-height 40px
 		transition border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1)
 		-webkit-appearance none
+		&::-webkit-input-placeholder
+			color #C0C4CC
+		&.is-disabled
+			border-color #E4E7ED
+			background-color #F5F7FA
+			color #C0C4CC
+			cursor not-allowed
 </style>
 
 <style lang="stylus">
