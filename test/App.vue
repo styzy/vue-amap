@@ -49,6 +49,13 @@
 				placeholder="地址搜索（禁止自定义输入）"
 				v-model="place2"
 			)
+			VAMapPlaceSearchInput(
+				:customEnable="false"
+				@locationChange="handlePlace2LocationChange"
+				disabled
+				placeholder="地址搜索（禁止自定义输入）禁用"
+				v-model="place2"
+			)
 </template>
 
 <script>

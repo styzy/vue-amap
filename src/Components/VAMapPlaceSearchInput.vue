@@ -6,13 +6,23 @@
 		:placeholder="placeholder"
 		:value="value"
 		@blur="handleBlur()"
-		@input="handleInput"
+		@focus="handleFocus()"
+		@input="handleInput($event)"
 		ref="input"
 	)
+	.option-ctn(v-if="placeList.length")
+		.option(
+			:title="place.name + place.cityname"
+			@click="handlePlaceSelect(place)"
+			v-for="place in placeList"
+		)
+			span.name {{ place.name }}
+			span.city {{ place.cityname }}
 </template>
 
 <script>
 import { AMapLoader } from '@'
+import { isParentNode } from '@/utils'
 
 export default {
 	name: 'VAMapPlaceSearchInput',
@@ -41,85 +51,130 @@ export default {
 	data() {
 		return {
 			AMap: null,
-			placeName: '',
-			autocompleteListener: null,
-			placeSearchListener: null
+			placeSearch: null,
+			placeList: [],
+			place: null
 		}
 	},
-	async mounted() {
-		this.AMap = await AMapLoader.load()
-		this.addListener()
+	watch: {
+		place() {
+			this.$emit('change', this.place ? this.place.name : '')
+			this.$emit(
+				'locationChange',
+				this.place
+					? [this.place.location.lng, this.place.location.lat]
+					: null
+			)
+			this.$emit('placeChange', this.place)
+		}
 	},
-	destroyed() {
-		this.removeListener()
+	mounted() {
+		window.addEventListener('click', this.optionsHideListener, true)
+		window.addEventListener('contextmenu', this.optionsHideListener, true)
+	},
+	beforeDestroy() {
+		window.removeEventListener('click', this.optionsHideListener, true)
+		window.removeEventListener(
+			'contextmenu',
+			this.optionsHideListener,
+			true
+		)
 	},
 	methods: {
-		async addListener() {
-			const autocomplete = new this.AMap.Autocomplete({
-					input: this.$refs.input
-				}),
-				placeSearch = new this.AMap.PlaceSearch({})
-
-			this.autocompleteListener = this.AMap.event.addListener(
-				autocomplete,
-				'select',
-				event => {
-					this.placeName = event.poi.name
-					placeSearch.search(event.poi.name)
-				}
-			)
-
-			this.placeSearchListener = this.AMap.event.addListener(
-				placeSearch,
-				'complete',
-				event => {
-					var position = null
-					if (
-						event &&
-						event.poiList &&
-						event.poiList.pois &&
-						event.poiList.pois.length
-					) {
-						position = [
-							event.poiList.pois[0].location.lng,
-							event.poiList.pois[0].location.lat
-						]
-					}
-
-					if (!position && !this.customEnable) {
-						this.clear()
-					} else {
-						this.$emit('change', this.placeName)
-						this.$emit('locationChange', position)
-					}
-				}
-			)
+		async createPlaceSearch() {
+			this.AMap = await AMapLoader.load()
+			this.placeSearch = new this.AMap.PlaceSearch({
+				extensions: 'all'
+			})
 		},
-		removeListener() {
-			this.AMap.event.removeListener(this.autocompleteListener)
-			this.AMap.event.removeListener(this.placeSearchListener)
-		},
-		clear() {
-			this.placeName = ''
-			this.$emit('change', '')
-			this.$emit('locationChange', null)
-		},
-		handleBlur() {
-			if (this.value !== this.placeName) {
-				if (!this.customEnable) {
-					this.clear()
+		async getPlaceList() {
+			if (!this.placeSearch) {
+				await this.createPlaceSearch()
+			}
+			this.placeSearch.search(this.value, (status, result) => {
+				if (status === 'complete') {
+					this.placeList = result?.poiList?.pois || []
+				} else {
+					this.placeList = []
 				}
+			})
+		},
+		async handleInput(event) {
+			this.$emit('change', event.target.value)
+			await this.$nextTick()
+			this.getPlaceList()
+		},
+		handlePlaceSelect(place = null) {
+			this.place = place
+			this.placeList = []
+		},
+		handleFocus() {
+			if (this.value?.trim()) {
+				this.getPlaceList()
 			}
 		},
-		handleInput(event) {
-			this.$emit('change', event.target.value)
+		handleBlur() {
+			if (this.customEnable) return
+			if (this.value !== this.place?.name) {
+				this.clear()
+			}
+		},
+		optionsHideListener(event) {
+			if (isParentNode(this.$el, event.target)) return
+			this.placeList = []
+		},
+		clear() {
+			this.place = null
+			this.$emit('change', '')
 		}
+		// async addListener() {
+		// 	const autocomplete = new this.AMap.Autocomplete({
+		// 			input: this.$refs.input
+		// 		}),
+		// 		placeSearch = new this.AMap.PlaceSearch({})
+
+		// 	this.autocompleteListener = this.AMap.event.addListener(
+		// 		autocomplete,
+		// 		'select',
+		// 		event => {
+		// 			this.placeName = event.poi.name
+		// 			placeSearch.search(event.poi.name)
+		// 		}
+		// 	)
+
+		// 	this.placeSearchListener = this.AMap.event.addListener(
+		// 		placeSearch,
+		// 		'complete',
+		// 		event => {
+		// 			var position = null
+		// 			if (
+		// 				event &&
+		// 				event.poiList &&
+		// 				event.poiList.pois &&
+		// 				event.poiList.pois.length
+		// 			) {
+		// 				position = [
+		// 					event.poiList.pois[0].location.lng,
+		// 					event.poiList.pois[0].location.lat
+		// 				]
+		// 			}
+
+		// 			if (!position && !this.customEnable) {
+		// 				this.clear()
+		// 			} else {
+		// 				this.$emit('change', this.placeName)
+		// 				this.$emit('locationChange', position)
+		// 			}
+		// 		}
+		// 	)
+		// },
 	}
 }
 </script>
 
 <style lang="stylus" scoped>
 .v-amap-place-search-input
+	position relative
 	input
 		display inline-block
 		box-sizing border-box
@@ -143,6 +198,32 @@ export default {
 			background-color #F5F7FA
 			color #C0C4CC
 			cursor not-allowed
+	.option-ctn
+		position absolute
+		top 100%
+		right 0
+		left 0
+		z-index 1
+		box-sizing border-box
+		border 1px solid #DCDFE6
+		background-color #FFFFFF
+		.option
+			overflow hidden
+			padding-right 5px
+			padding-left 15px
+			height 40px
+			text-overflow ellipsis
+			white-space nowrap
+			font-size 12px
+			line-height @height
+			cursor pointer
+			&:hover
+				background-color #F4F5F6
+			.name
+				color #424242
+			.city
+				margin-left 10px
+				color #AAAAAA
 </style>
 
 <style lang="stylus">

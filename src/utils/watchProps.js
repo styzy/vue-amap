@@ -1,4 +1,4 @@
-import typeOf from './typeOf'
+import { typeOf } from '@/utils'
 
 const watchProps = (aMapObject, vm, props) => {
 	props
