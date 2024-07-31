@@ -38,23 +38,26 @@
 				)
 		.search-ctn
 			VAMapPlaceSearchInput(
-				:value="place1"
-				@change="handlePlace1Change"
+				:value="placeName1"
+				@change="handlePlace1NameChange"
 				@locationChange="handlePlace1LocationChange"
+				@placeChange="handlePlace1Change"
 				placeholder="地址搜索"
 			)
 			VAMapPlaceSearchInput(
 				:customEnable="false"
 				@locationChange="handlePlace2LocationChange"
+				@placeChange="handlePlace2Change"
 				placeholder="地址搜索（禁止自定义输入）"
-				v-model="place2"
+				v-model="placeName2"
 			)
 			VAMapPlaceSearchInput(
 				:customEnable="false"
 				@locationChange="handlePlace2LocationChange"
+				@placeChange="handlePlace2Change"
 				disabled
 				placeholder="地址搜索（禁止自定义输入）禁用"
-				v-model="place2"
+				v-model="placeName2"
 			)
 </template>
 
@@ -79,8 +82,8 @@ export default {
 			massIconUrl:
 				'https://a.amap.com/jsapi_demos/static/images/mass2.png',
 			massLocationList: [],
-			place1: '123',
-			place2: ''
+			placeName1: '123',
+			placeName2: ''
 		}
 	},
 	mounted() {
@@ -118,14 +121,20 @@ export default {
 			console.log('mass mark init')
 		},
 		handlePlace1Change(place) {
-			this.place1 = place
 			console.log('place1 change: ', place)
+		},
+		handlePlace1NameChange(name) {
+			this.placeName1 = name
+			console.log('place1 name change: ', name)
 		},
 		handlePlace1LocationChange(location) {
 			console.log('place1 location change: ', location)
 		},
+		handlePlace2Change(place) {
+			console.log('place2 change: ', place)
+		},
 		handlePlace2LocationChange(location) {
-			console.log('place1 location change: ', location)
+			console.log('place2 location change: ', location)
 		}
 	}
 }
