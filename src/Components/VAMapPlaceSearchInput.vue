@@ -131,6 +131,21 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+baseScroll($color = #AAAAAA) // 默认滚动条
+	&::-webkit-scrollbar
+		width 10px
+	&::-webkit-scrollbar-track-piece
+		background-color transparent
+	&::-webkit-scrollbar-thumb
+		border-radius 10px
+		background-color transparent
+	&:hover
+		&::-webkit-scrollbar-track-piece
+			background-color rgba($color, 0.2)
+		&::-webkit-scrollbar-thumb
+			background-color $color
+			&:hover
+				background-color: $color - #222222
 .v-amap-place-search-input
 	position relative
 	input
@@ -157,12 +172,16 @@ export default {
 			color #C0C4CC
 			cursor not-allowed
 	.option-ctn
+		baseScroll()
+
 		position absolute
 		top 100%
 		right 0
 		left 0
 		z-index 1
+		overflow-y auto
 		box-sizing border-box
+		max-height 402px
 		border 1px solid #DCDFE6
 		background-color #FFFFFF
 		.option
@@ -180,11 +199,6 @@ export default {
 			.name
 				color #424242
 			.city
-				margin-left 10px
-				color #AAAAAA
-</style>
-
-<style lang="stylus">
-.amap-sug-result
-	display none
+				margin-left 5px
+				color #C1C1C1
 </style>

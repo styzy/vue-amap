@@ -82,7 +82,7 @@ export default {
 			massIconUrl:
 				'https://a.amap.com/jsapi_demos/static/images/mass2.png',
 			massLocationList: [],
-			placeName1: '123',
+			placeName1: '北京燕莎奥特莱斯购物中心',
 			placeName2: ''
 		}
 	},
