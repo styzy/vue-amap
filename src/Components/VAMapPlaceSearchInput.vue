@@ -8,7 +8,6 @@
 		@blur="handleBlur()"
 		@focus="handleFocus()"
 		@input="handleInput($event)"
-		ref="input"
 	)
 	.option-ctn(v-if="placeList.length")
 		.option(
@@ -127,47 +126,6 @@ export default {
 			this.place = null
 			this.$emit('change', '')
 		}
-		// async addListener() {
-		// 	const autocomplete = new this.AMap.Autocomplete({
-		// 			input: this.$refs.input
-		// 		}),
-		// 		placeSearch = new this.AMap.PlaceSearch({})
-
-		// 	this.autocompleteListener = this.AMap.event.addListener(
-		// 		autocomplete,
-		// 		'select',
-		// 		event => {
-		// 			this.placeName = event.poi.name
-		// 			placeSearch.search(event.poi.name)
-		// 		}
-		// 	)
-
-		// 	this.placeSearchListener = this.AMap.event.addListener(
-		// 		placeSearch,
-		// 		'complete',
-		// 		event => {
-		// 			var position = null
-		// 			if (
-		// 				event &&
-		// 				event.poiList &&
-		// 				event.poiList.pois &&
-		// 				event.poiList.pois.length
-		// 			) {
-		// 				position = [
-		// 					event.poiList.pois[0].location.lng,
-		// 					event.poiList.pois[0].location.lat
-		// 				]
-		// 			}
-
-		// 			if (!position && !this.customEnable) {
-		// 				this.clear()
-		// 			} else {
-		// 				this.$emit('change', this.placeName)
-		// 				this.$emit('locationChange', position)
-		// 			}
-		// 		}
-		// 	)
-		// },
 	}
 }
 </script>

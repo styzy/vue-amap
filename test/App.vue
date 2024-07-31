@@ -42,13 +42,13 @@
 				@change="handlePlace1NameChange"
 				@locationChange="handlePlace1LocationChange"
 				@placeChange="handlePlace1Change"
-				placeholder="地址搜索"
+				placeholder="允许自定义输入"
 			)
 			VAMapPlaceSearchInput(
 				:customEnable="false"
 				@locationChange="handlePlace2LocationChange"
 				@placeChange="handlePlace2Change"
-				placeholder="地址搜索（禁止自定义输入）"
+				placeholder="禁止自定义输入"
 				v-model="placeName2"
 			)
 			VAMapPlaceSearchInput(
@@ -56,7 +56,7 @@
 				@locationChange="handlePlace2LocationChange"
 				@placeChange="handlePlace2Change"
 				disabled
-				placeholder="地址搜索（禁止自定义输入）禁用"
+				placeholder="禁止自定义输入 禁用"
 				v-model="placeName2"
 			)
 </template>
