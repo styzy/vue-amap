@@ -82,6 +82,12 @@ declare module '@styzy/vue-amap' {
 	import { PluginFunction } from 'vue'
 
 	/**
+	 * 高德地图 SDK 加载器
+	 * - 可通过 `load()` 方法加载高德地图 SDK
+	 */
+	export const AMapLoader: IAMapLoader
+
+	/**
 	 * 高德地图管理器
 	 */
 	export default class AMapManager {
