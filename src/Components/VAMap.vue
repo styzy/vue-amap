@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AMapManager, { AMapLoader } from '@'
+import AMapManager, { AMapLoader } from '@/index'
 import { listenerProxy, watchProps } from '@/utils'
 
 const watchedProps = [

@@ -4,7 +4,7 @@
 		slot
 </template>
 <script>
-import { AMapLoader } from '@'
+import { AMapLoader } from '@/index'
 import { listenerProxy, watchProps } from '@/utils'
 
 const watchedProps = [

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { AMapLoader } from '@'
+import { AMapLoader } from '@/index'
 import { isParentNode } from '@/utils'
 
 export default {

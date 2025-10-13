@@ -8,7 +8,7 @@
 		"paths": {
 			"@/*": ["src/*"],
 			"#": ["src/utils"],
-			"@test*": ["test/*"],
+			"@test*": ["test/*"]
 		}
 	},
 	"exclude": ["node_modules", "dist"],

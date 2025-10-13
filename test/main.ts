@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueAMap from '@'
+import VueAMap from '@/index'
+// import VueAMap from '@styzy/vue-amap'
 
 Vue.config.productionTip = false
 
