@@ -1,6 +1,6 @@
 {
 	"name": "@styzy/vue-amap",
-	"version": "1.3.1",
+	"version": "1.4.0",
 	"private": false,
 	"description": "An AMap Plugins For Vue.js",
 	"keywords": [
@@ -25,7 +25,7 @@
 	"scripts": {
 		"dev": "vue-cli-service serve --open",
 		"types": "vue-tsc --project tsconfig.types.json",
-		"lib": "vue-cli-service build --target lib --name vue-amap --dest lib src/index.js"
+		"lib": "vue-cli-service build --target lib --name vue-amap --dest lib src/index.ts"
 	},
 	"main": "lib/vue-amap.common.js",
 	"types": "types/index.d.ts",
