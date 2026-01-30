@@ -82,25 +82,30 @@ declare module '@styzy/vue-amap' {
 	import { PluginFunction } from 'vue'
 
 	/**
-	 * 高德地图 SDK 加载器
-	 * - 可通过 `load()` 方法加载高德地图 SDK
-	 */
-	export const AMapLoader: IAMapLoader
-
-	/**
 	 * 高德地图管理器
 	 */
 	export default class AMapManager {
 		/**
+		 * 高德地图 SDK 加载器
+		 *
+		 * - 可通过 `load()` 方法加载高德地图 SDK
+		 */
+		static readonly AMapLoader: IAMapLoader
+		/**
+		 * 全局地图选项
+		 */
+		static readonly globalMapOptions: GlobalMapOptions
+		/**
 		 * 高德地图管理器版本号
 		 */
-		static version: string
+		static readonly version: string
 		/**
 		 * 安装高德地图组件，提供给 Vue 安装，注册组件
 		 */
 		static install: PluginFunction<void>
 		/**
 		 * 初始化高德地图 SDK，加载地图脚本
+		 *
 		 * @param options 高德地图 SDK 加载器配置项
 		 */
 		static initAMap(options: InitOptions): Promise<AMap>
