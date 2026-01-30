@@ -122,4 +122,4 @@ class Loader implements IAMapLoader {
 	}
 }
 
-export const loader = new Loader()
+export default new Loader()

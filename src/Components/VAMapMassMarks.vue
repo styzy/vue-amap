@@ -1,5 +1,5 @@
 <script>
-import { AMapLoader } from '@/index'
+import loader from '@/loader'
 import { listenerProxy, watchProps } from '@/utils'
 
 const watchedProps = [
@@ -41,7 +41,7 @@ export default {
 	},
 	methods: {
 		async _createMarker() {
-			const AMap = await AMapLoader.load(),
+			const AMap = await loader.load(),
 				options = Object.assign({}, this.$attrs, {
 					style: this.$attrs.styleObject || {}
 				})

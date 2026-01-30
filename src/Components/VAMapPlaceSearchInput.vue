@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { AMapLoader } from '@/index'
+import loader from '@/loader'
 import { isParentNode } from '@/utils'
 
 export default {
@@ -81,7 +81,7 @@ export default {
 	},
 	methods: {
 		async createPlaceSearch() {
-			this.AMap = await AMapLoader.load()
+			this.AMap = await loader.load()
 			this.placeSearch = new this.AMap.PlaceSearch({
 				extensions: 'all'
 			})

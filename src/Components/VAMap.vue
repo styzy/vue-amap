@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import AMapManager, { AMapLoader } from '@/index'
+import AMapManager from '@/index'
+import loader from '@/loader'
 import { listenerProxy, watchProps } from '@/utils'
 
 const watchedProps = [
@@ -47,7 +48,7 @@ export default {
 	},
 	methods: {
 		async _createMap() {
-			this.AMap = await AMapLoader.load()
+			this.AMap = await loader.load()
 
 			const options = Object.assign(
 				{},

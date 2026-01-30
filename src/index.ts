@@ -1,4 +1,4 @@
-import { loader } from './loader'
+import loader from './loader'
 import Components from './Components'
 import { version } from './config'
 
